@@ -1,72 +1,78 @@
 <template>
-  <div class="container">
-    <div>
-      <logo />
-      <h1 class="title">
-        studying-nuxt
-      </h1>
-      <h2 class="subtitle">
-        They called FoodAdvisor :)
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-      </div>
+  <div>
+    <Hero @onChangeBanner="onChangeBanner" :banner="banner">
+      <Banner slot="header" style="width: 70%" v-if="banner" />
+      <Slogan slot="header" style="width: 70%" v-else />
+    </Hero>
+
+    <div class="container">
+      <section class="section">
+        <div class="columns">
+          <restaurant-card
+            :image="restaurant.image"
+            :name="restaurant.name"
+            :likes="restaurants[index].likes"
+            :category="restaurant.category"
+            :description="restaurant.description"
+            :text="restaurant.text"
+            :mentions="mentions"
+            :hashtags="hashtags"
+            :slug="restaurant.slug"
+            @plusLike="onPlusLike"
+            v-for="(restaurant, index) in restaurants"
+            :key="restaurant.name + index"
+          />
+        </div>
+      </section>
     </div>
   </div>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
+import api from "@/services/api";
+
+import Banner from "@/components/Banner.vue";
+import Hero from "@/components/Hero.vue";
+import RestaurantCard from "@/components/RestaurantCard/RestaurantCard.vue";
+import Slogan from "@/components/Slogan.vue";
 
 export default {
+  name: "index",
   components: {
-    Logo
+    Banner,
+    Hero,
+    RestaurantCard,
+    Slogan
+  },
+  data: () => ({
+    banner: false,
+    likes: 0,
+    restaurants: [],
+    mentions: ["@alvarooncode", "@nodejs", "@vuejs"],
+    hashtags: ["#webdev", "#javascript", "#lovingvue", "#lovingnode"]
+  }),
+  methods: {
+    onChangeBanner() {
+      this.banner = !this.banner;
+    },
+    onPlusLike() {
+      console.log("onPlusLike:", this.likes + 1);
+      this.likes++;
+    }
+  },
+  async created() {
+    const r = await api.getAllRestaurants("restaurants");
+
+    console.log("created:", r);
+
+    if (r.result) {
+      this.restaurants = r.data;
+    }
+
+    console.log("restaurants:", this.restaurants);
   }
-}
+};
 </script>
 
 <style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
 </style>

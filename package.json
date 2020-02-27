@@ -1,7 +1,7 @@
 {
   "name": "studying-nuxt",
   "version": "1.0.0",
-  "description": "They called FoodAdvisor :)",
+  "description": "They called it FoodAdvisor. It's some kind of restaurants searcher made with Nuxt.",
   "author": "Álvaro Saavedra",
   "private": true,
   "scripts": {
@@ -12,6 +12,8 @@
     "test": "jest"
   },
   "dependencies": {
+    "@nuxtjs/axios": "^5.9.5",
+    "@nuxtjs/bulma": "^1.2.7",
     "nuxt": "^2.0.0"
   },
   "devDependencies": {
