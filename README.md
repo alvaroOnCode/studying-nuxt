@@ -1,6 +1,6 @@
 # studying-nuxt
 
-> They called FoodAdvisor :)
+> They called it FoodAdvisor :)
 
 ## Build Setup
 
